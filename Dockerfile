@@ -10,4 +10,6 @@ RUN \
   unzip terraform_${VERSION}_linux_amd64.zip && rm terraform_${VERSION}_linux_amd64.zip && \
   mv terraform /usr/bin/terraform
 
+WORKDIR /files
+
 ENTRYPOINT ["terraform"]
