@@ -13,10 +13,10 @@ $ docker push lcaparros/terraform:1.0.9
 
 ## Usage
 
-A good way to use this image could be to create a new alias in your bash_profile file:
+It is necessary to share a volume to the current directory to make the necessary Terraform files available for the Docker container (use the `/files` volume in the container). A good way to use this image could be to create a new alias in your bash_profile file:
 
 ```shell
-alias terraform='docker run --rm -it lcaparros/terraform:1.0.9'
+alias terraform='docker run --rm -it -v $(pwd):/fileslcaparros/terraform:1.0.9'
 ```
 
 Now you could just type `terraform` in the CLI and it will work as the real terraform binary.
