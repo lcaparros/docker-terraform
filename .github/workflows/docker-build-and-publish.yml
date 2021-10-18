@@ -21,8 +21,12 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs\/tags\/v}
 
+      - name: Get the image name
+        id: get_name
+        run: echo ::set-output name=IMAGE_NAME::${REPO_NAME/docker-}
+
       - name: Build the Docker image
-        run: docker build --build-arg VERSION=${{ steps.get_version.outputs.VERSION }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ env.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }} .
+        run: docker build --build-arg VERSION=${{ steps.get_version.outputs.VERSION }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ steps.get_name.outputs.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }} .
         
       # Login aginst a Docker registry
       - name: Log into registry ${{ env.REGISTRY }}
@@ -32,4 +36,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Docker image
-        run: docker push ${{ env.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}
+        run: docker push ${{ steps.get_name.outputs.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}
