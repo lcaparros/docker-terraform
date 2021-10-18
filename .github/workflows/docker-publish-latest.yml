@@ -15,7 +15,7 @@ env:
   REPO_NAME: ${{ github.repository }}
 
 jobs:
-  buildTaggedVersion:
+  buildAndPush:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,8 +25,8 @@ jobs:
         id: get_name
         run: echo ::set-output name=IMAGE_NAME::${REPO_NAME/docker-}
 
-      - name: Build the tagged Docker image
-        run: docker build --build-arg VERSION=${{ inputs.candidate }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ steps.get_name.outputs.IMAGE_NAME }}:latest .
+      - name: Build the Docker image
+        run: docker build --build-arg VERSION=${{ github.event.inputs.candidate }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ steps.get_name.outputs.IMAGE_NAME }}:latest .
       
       # Login against a Docker registry
       - name: Log into registry ${{ env.REGISTRY }}

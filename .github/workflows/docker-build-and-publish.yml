@@ -11,7 +11,7 @@ env:
   REPO_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  buildAndPush:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
