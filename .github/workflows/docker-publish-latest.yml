@@ -1,12 +1,11 @@
 name: Docker Publish Latest
 
 on:
-  push:
-    workflow_dispatch:
-      inputs:
-          candidate:
-            description: Version candidate to be latest
-            required: true
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: Version candidate to be latest
+        required: true
 
 env:
   # Use docker.io for Docker Hub if empty
