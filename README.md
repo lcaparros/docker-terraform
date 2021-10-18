@@ -8,6 +8,17 @@ Some amazing Docker images to work with terraform Out Of The Box
 [![GitHub Release](https://img.shields.io/github/release/lcaparros/docker-terraform.svg?color=4edafc&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/lcaparros/docker-terraform/releases)
 [![GitHub Repository](https://img.shields.io/static/v1.svg?color=4edafc&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=lcaparros/docker-terraform&message=GitHub%20Repo&logo=github)](https://github.com/lcaparros/docker-terraform)
 
+# Contribution
+
+## Pull Requests
+
+Create a new Pull Request with the necessary changes. After being reviewed and merged a new tag will be generated, creating a new Release and publishing the new version.
+
+```shell
+$ git tag -a v1.0.9 -m "This is my new amazing version"
+$ git push origin v1.0.9
+```
+
 ## How to push a new version of the image
 
 ```shell
@@ -16,7 +27,7 @@ $ docker tag terraform lcaparros/terraform:1.0.9
 $ docker push lcaparros/terraform:1.0.9
 ```
 
-## Usage
+# Usage
 
 It is necessary to share a volume to the current directory to make the necessary Terraform files available for the Docker container (use the `/files` volume in the container). A good way to use this image could be to create a new alias in your bash_profile file:
 
