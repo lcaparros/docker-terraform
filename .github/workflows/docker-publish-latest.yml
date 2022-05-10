@@ -7,6 +7,11 @@ on:
         description: Version candidate to be latest
         required: true
         type: string
+      tagged:
+        description: The docker image will be tagged with the version number as well if this value is true
+        required: false
+        type: boolean
+        default: false
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -25,7 +30,11 @@ jobs:
         id: get_name
         run: echo ::set-output name=IMAGE_NAME::${REPO_NAME/docker-}
 
-      - name: Build the Docker image
+      - name: Build tagged Docker image
+        if: ${{ github.event.inputs.tagged }}
+        run: docker build --build-arg VERSION=${{ github.event.inputs.candidate }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ steps.get_name.outputs.IMAGE_NAME }}:${{ github.event.inputs.candidate }} .
+      
+      - name: Build latest Docker image
         run: docker build --build-arg VERSION=${{ github.event.inputs.candidate }} --build-arg BUILD_DATE="$(date +%Y/%m/%dT%H:%M:%S)" --file Dockerfile --tag ${{ steps.get_name.outputs.IMAGE_NAME }}:latest .
       
       # Login against a Docker registry
@@ -35,6 +44,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      - name: Push Docker image
+      - name: Push tagged Docker image
+        if: ${{ github.event.inputs.tagged }}
+        run: docker push ${{ steps.get_name.outputs.IMAGE_NAME }}:${{ github.event.inputs.candidate }}
+      
+      - name: Push latest Docker image
         run: docker push ${{ steps.get_name.outputs.IMAGE_NAME }}:latest
 
